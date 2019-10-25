@@ -45,6 +45,7 @@
     shell: unzip jfrog-artifactory-oss-6.13.1.zip
     args:
       chdir: /opt
+      warn: no
 
   - name: remove .zip
     file:
