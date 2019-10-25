@@ -48,8 +48,8 @@
 
   - name: remove .zip
     file:
+      path: /opt/jfrog-artifactory-oss-6.13.1.zip
       state: absent
-      path: /opt/jfrog-artifactory-oss-6.13.1.zip/
 
   - name: install artifactory
     shell: ./installService.sh
@@ -63,8 +63,8 @@
 
   - name: remove repo
     file:
+      path: /opt/Project1
       state: absent
-      path: /opt/Project1/
 
   - name: copy config files
     copy: src={{ item.src }} dest={{ item.dest }}
