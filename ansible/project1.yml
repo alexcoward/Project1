@@ -26,11 +26,15 @@
       update_cache: yes
       state: present
 
-  - name: export java_home 
-    command: export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+  - name: Inserting a line after a pattern in Ansible example 
+    lineinfile:
+      path: /home/ubuntu/.bashrc
+      line: "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64"
 
-  - name: add java_home to path
-    command: export PATH=$PATH:$JAVA_HOME/bin
+  - name: Inserting a line after a pattern in Ansible example 
+    lineinfile:
+      path: /home/ubuntu/.bashrc
+      line: "export PATH=$PATH:$JAVA_HOME/bin"
 
   - name: get artifactory .zip
     shell: sudo curl -L "https://jfrog.bintray.com/artifactory/jfrog-artifactory-oss-6.13.1.zip" -o jfrog-artifactory-oss-6.13.1.zip
