@@ -1,0 +1,88 @@
+---
+
+- hosts: localhost
+  connection: local
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  vars:
+     core_packages: ['software-properties-common', 'unzip', 'openjdk-8-jre', 'ec2-instance-connect', 'apache2']
+
+  tasks:
+
+  - name: Enable repository
+    apt_repository:
+      repo: "ppa:openjdk-r/ppa"
+      state: present
+
+  - name: upgrade dist
+    apt:
+      upgrade: 'yes'
+
+  - name: install core packages
+    apt:
+      name: "{{ core_packages }}"
+      update_cache: yes
+      state: present
+
+  - name: export java_home 
+    command: export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+  - name: add java_home to path
+    command: export PATH=$PATH:$JAVA_HOME/bin
+
+  - name: get artifactory .zip
+    shell: sudo curl -L "https://jfrog.bintray.com/artifactory/jfrog-artifactory-oss-6.13.1.zip" -o jfrog-artifactory-oss-6.13.1.zip
+    args:
+      chdir: /opt
+
+  - name: unzip artifactory .zip
+    shell: unzip jfrog-artifactory-oss-6.13.1.zip
+    args:
+      chdir: /opt
+
+  - name: remove .zip
+    file:
+      state: absent
+      path: /opt/jfrog-artifactory-oss-6.13.1.zip/
+
+  - name: install artifactory
+    shell: ./installService.sh
+    args:
+      chdir: /opt/artifactory-oss-6.13.1/bin
+
+  - name: clone project1 repo
+    git:
+      repo: https://github.com/alexcoward/Project1.git
+      dest: /tmp/project1
+
+  - name: remove repo
+    file:
+      state: absent
+      path: /opt/Project1/
+
+  - name: copy config files
+    copy: src={{ item.src }} dest={{ item.dest }}
+    with_items:
+      - { src: '/tmp/project1/config/default', dest: '/etc/opt/jfrog/artifactory/default' }
+      - { src: '/tmp/project1/config/000-default.conf', dest: '/etc/apache2/sites-available/000-default.conf' }
+
+  - name: enable apache2 module rewrite workaround 
+    command: a2enmod rewrite
+
+  - name: enable apache2 module proxy_http workaround 
+    command: a2enmod proxy_http
+
+  - name: enable apache2 module proxy workaround 
+    command: a2enmod proxy
+
+  - name: restart apache2
+    service:
+      name: apache2
+      state: restarted
+
+  - name: restart artifactory
+    service:
+      name: artifactory
+      state: restarted
