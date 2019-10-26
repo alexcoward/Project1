@@ -3,7 +3,7 @@
 #Default values
 export ARTIFACTORY_HOME=/opt/artifactory-oss-6.13.1
 export ARTIFACTORY_USER=artifactory
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 #export START_LOCAL_REPLICATOR=true
 
 #export START_LOCAL_MDS=true
