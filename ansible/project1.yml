@@ -7,7 +7,7 @@
   become_method: sudo
 
   vars:
-     core_packages: ['software-properties-common', 'git' , 'unzip', 'openjdk-8-jre', 'ec2-instance-connect', 'apache2']
+     core_packages: ['software-properties-common', 'git' , 'unzip', 'openjdk-11-jdk', 'ec2-instance-connect', 'apache2']
 
   tasks:
 
@@ -29,7 +29,7 @@
   - name: insert JAVA_HOME in .bashrc 
     lineinfile:
       path: /home/ubuntu/.bashrc
-      line: "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64"
+      line: "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64"
 
   - name: insert PATH in .bashrc
     lineinfile:
@@ -81,6 +81,33 @@
 
   - name: enable apache2 module proxy workaround 
     command: a2enmod proxy
+
+  - name: enable apache2 module proxy_ajp workaround 
+    command: a2enmod proxy_ajp
+
+  - name: enable apache2 module deflate workaround 
+    command: a2enmod deflate
+
+  - name: enable apache2 module headers workaround 
+    command: a2enmod headers
+
+  - name: enable apache2 module proxy_balancer workaround 
+    command: a2enmod proxy_balancer
+
+  - name: enable apache2 module proxy_connect workaround 
+    command: a2enmod proxy_connect
+
+  - name: enable apache2 module proxy_html workaround 
+    command: a2enmod proxy_html
+
+  - name: enable apache2 module ssl workaround 
+    command: a2enmod ssl
+
+  - name: enable apache2 module lbmethod_byrequests workaround 
+    command: a2enmod lbmethod_byrequests
+
+  - name: enable apache2 module slotmem_shm workaround 
+    command: a2enmod slotmem_shm
 
   - name: restart apache2
     service:
