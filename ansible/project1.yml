@@ -1,7 +1,7 @@
 ---
 
-- hosts: localhost
-  connection: local
+- hosts: webservers
+  remote_user: ubuntu
   become: yes
   become_user: root
   become_method: sudo
@@ -60,18 +60,18 @@
   - name: clone project1 repo
     git:
       repo: https://github.com/alexcoward/Project1.git
-      dest: /tmp/project1
+      dest: /home/Project1
 
-  - name: remove repo
+  - name: copy artifactory config files
+    command: cp /home/Project1/config/default /etc/opt/jfrog/artifactory/default
+
+  - name: copy apache config files
+    command: cp /home/Project1/config/000-default.conf /etc/apache2/sites-available/000-default.conf
+
+  - name: remove project1 repo
     file:
-      path: /opt/Project1
+      path: /home/Project1
       state: absent
-
-  - name: copy config files
-    copy: src={{ item.src }} dest={{ item.dest }}
-    with_items:
-      - { src: '/tmp/project1/config/default', dest: '/etc/opt/jfrog/artifactory/default' }
-      - { src: '/tmp/project1/config/000-default.conf', dest: '/etc/apache2/sites-available/000-default.conf' }
 
   - name: enable apache2 module rewrite workaround 
     command: a2enmod rewrite
