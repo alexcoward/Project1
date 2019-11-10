@@ -1,11 +1,7 @@
-# Project1
+# Project1 Repository Contains
 
-## Dependencies
-
-
-## Installation
-
-[Running the Ansible file in place (EC2 Server Environment) to stand up the website](https://github.com/alexcoward/Project0/wiki/Ansible-Playbook-Documentation#running-the-ansible-file-in-place-ec2-server-environment-to-stand-up-the-website)
+- Miscellaneous project documentation
+- Configuration files for Apache2 / Artifactory
 
 ## Contributing
 
