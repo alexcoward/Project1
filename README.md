@@ -1,4 +1,6 @@
-# Project1 Repository Contains
+# Project1 Repository
+
+## This Repository Contains:
 
 - Miscellaneous project documentation
 - Configuration files for Apache2 / Artifactory
